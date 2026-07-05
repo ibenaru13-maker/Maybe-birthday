@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Selamat Ulang Tahun</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <canvas id="motes" class="motes"></canvas>
+  <div class="grain"></div>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero">
+    <p class="eyebrow">satu malam yang layak dirayakan</p>
+    <h1 class="hero-title">
+      untuk <span class="name" data-field="name">[Nama]</span>
+    </h1>
+    <p class="hero-sub">genap <span data-field="age">[Usia]</span> tahun</p>
+
+    <button class="candle-wrap" id="candleBtn" type="button" aria-label="Sentuh nyala lilin untuk membuat harapan">
+      <span class="flame" id="flame"></span>
+      <span class="wick"></span>
+      <span class="wax"></span>
+    </button>
+
+    <p class="hint" id="hint">sentuh nyala lilin untuk membuat harapan</p>
+    <div class="scroll-cue" aria-hidden="true"><span></span>gulir ke bawah</div>
+  </header>
+
+  <!-- ===== ANGKA KEHIDUPAN ===== -->
+  <section class="numbers" id="numbersSection">
+    <span class="eyebrow">perjalanan sejauh ini</span>
+    <h2 class="section-title">dihitung dalam angka</h2>
+    <div class="number-grid">
+      <div class="number-box">
+        <span class="number-value" id="numDays">0</span>
+        <span class="number-label">hari telah dilalui</span>
+      </div>
+      <div class="number-box">
+        <span class="number-value" id="numHours">0</span>
+        <span class="number-label">jam telah berlalu</span>
+      </div>
+      <div class="number-box">
+        <span class="number-value" id="numMonths">0</span>
+        <span class="number-label">bulan telah terlewati</span>
+      </div>
+    </div>
+
+    <div class="next-birthday">
+      <span class="eyebrow">menuju ulang tahun berikutnya</span>
+      <div class="countdown" id="countdown">
+        <div class="count-box"><span id="cd-days">00</span><small>hari</small></div>
+        <div class="count-box"><span id="cd-hours">00</span><small>jam</small></div>
+        <div class="count-box"><span id="cd-mins">00</span><small>menit</small></div>
+        <div class="count-box"><span id="cd-secs">00</span><small>detik</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MESSAGE (typewriter reveal) ===== -->
+  <section class="message" id="messageSection">
+    <span class="eyebrow">sebuah pesan</span>
+    <p class="message-text" id="messageText" data-field="message"></p>
+    <p class="message-sign">— <span data-field="from">[Dari siapa]</span></p>
+  </section>
+
+  <!-- ===== GALERI (dengan lightbox) ===== -->
+  <section class="gallery" id="gallerySection">
+    <span class="eyebrow">galeri kenangan</span>
+    <h2 class="section-title">sentuh untuk memperbesar</h2>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </section>
+
+  <!-- ===== KUTIPAN BERGILIR ===== -->
+  <section class="quotes" id="quotesSection">
+    <span class="eyebrow">kata-kata untuk direnungkan</span>
+    <div class="quote-stage" id="quoteStage">
+      <p class="quote-text" id="quoteText"></p>
+    </div>
+    <div class="quote-dots" id="quoteDots"></div>
+  </section>
+
+  <!-- ===== LIGHTBOX OVERLAY ===== -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Tutup">✕</button>
+    <div class="lightbox-content">
+      <div class="lightbox-image" id="lightboxImage"></div>
+      <p class="lightbox-caption" id="lightboxCaption"></p>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>dibuat dengan penuh perhatian, untuk satu hari yang layak dirayakan.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
