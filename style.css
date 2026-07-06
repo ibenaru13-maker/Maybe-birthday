@@ -259,6 +259,19 @@ button { font-family: inherit; cursor: pointer; }
   transform: translateY(0);
 }
 
+/* sebelum lilin ditiup, section-section ini belum "ada" sama sekali */
+.locked {
+  display: none !important;
+}
+
+/* sebelum ditiup, tidak ada yang perlu di-scroll */
+.scroll-cue {
+  display: none;
+}
+.hero.is-unlocked .scroll-cue {
+  display: flex;
+}
+
 /* =========================================================
    ANGKA KEHIDUPAN
    ========================================================= */
@@ -394,7 +407,6 @@ button { font-family: inherit; cursor: pointer; }
   display: flex;
   align-items: flex-end;
   transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
-  object-position:500px 30px;
 }
 .gallery-item:hover {
   transform: translateY(-4px);
