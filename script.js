@@ -11,14 +11,14 @@ const CONFIG = {
   from: "Orang yang menyayangimu",
 
   photos: [
-    { url: "img/photo1.jpeg", caption: "kenangan" },
-    { url: "img/photo2.jpeg", caption: "momen bahagia" },
-    { url: "img/photo3.jpeg", caption: "hari spesial" },
-    { url: "img/photo4.jpeg", caption: "bersama-sama" }
+    { url: "", caption: "kenangan pertama" },
+    { url: "", caption: "momen bahagia" },
+    { url: "", caption: "hari spesial" },
+    { url: "", caption: "bersama-sama" }
   ],
 
   quotes: [
-    "Usia hanyalah angka; yang   berarti adalah cerita yang kamu tulis di dalamnya.",
+    "Usia hanyalah angka; yang berarti adalah cerita yang kamu tulis di dalamnya.",
     "Setiap tahun adalah bab baru — semoga bab ini penuh keberanian.",
     "Rayakan dirimu hari ini, bukan hanya karena bertambah tua, tapi karena terus bertumbuh.",
     "Semoga kamu selalu punya alasan untuk tersenyum, bahkan di hari-hari biasa."
@@ -95,7 +95,8 @@ function initMotes() {
 function initCandle() {
   const btn = document.getElementById('candleBtn');
   const hint = document.getElementById('hint');
-  const numbers = document.getElementById('numbersSection');
+  const hero = document.querySelector('.hero');
+  const gallery = document.getElementById('gallerySection');
   let blown = false;
 
   function blow() {
@@ -105,9 +106,15 @@ function initCandle() {
     hint.textContent = 'harapanmu sudah dikirim ke semesta';
     hint.style.opacity = '0.85';
     burstMotes(btn);
+
     setTimeout(() => {
-      numbers.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 700);
+      // buka semua bagian yang tadinya belum "ada"
+      document.querySelectorAll('.locked').forEach((el) => el.classList.remove('locked'));
+      hero.classList.add('is-unlocked');
+
+      gallery.classList.add('is-visible');
+      gallery.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 900);
   }
 
   btn.addEventListener('click', blow);
