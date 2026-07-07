@@ -3,6 +3,8 @@
    Tidak perlu menyentuh HTML atau CSS.
    ========================================================= */
 const CONFIG = {
+  pin: "12345",              // kode akses — bisa berapa digit aja, angka atau bisa dicampur (tetap disarankan pakai angka)
+
   name: "Nama Kamu",
   age: 20,
   birthDate: "2006-08-17",       // tanggal lahir lengkap, format YYYY-MM-DD — dipakai untuk angka kehidupan & hitung mundur
@@ -39,6 +41,85 @@ function applyConfig() {
 }
 
 /* =========================================================
+   GERBANG PIN — keypad
+   ========================================================= */
+function initPinGate() {
+  const screen = document.getElementById('pinScreen');
+  const dotsWrap = document.getElementById('pinDots');
+  const keypad = document.getElementById('keypad');
+  const error = document.getElementById('pinError');
+  const content = document.getElementById('siteContent');
+
+  let buffer = '';
+
+  function renderDots() {
+    dotsWrap.innerHTML = '';
+    for (let i = 0; i < CONFIG.pin.length; i++) {
+      const dot = document.createElement('span');
+      dot.className = 'pin-dot' + (i < buffer.length ? ' is-filled' : '');
+      dotsWrap.appendChild(dot);
+    }
+  }
+
+  function showError() {
+    error.classList.add('show');
+    dotsWrap.classList.add('is-shaking');
+    setTimeout(() => dotsWrap.classList.remove('is-shaking'), 400);
+    buffer = '';
+    renderDots();
+  }
+
+  function unlock() {
+    screen.classList.add('is-hidden');
+    content.classList.add('is-unlocked');
+    setTimeout(() => screen.remove(), 700);
+  }
+
+  function checkPin() {
+    if (buffer.length === 0) return;
+    if (buffer === CONFIG.pin) {
+      unlock();
+    } else {
+      showError();
+    }
+  }
+
+  function pressKey(key) {
+    error.classList.remove('show');
+
+    if (key === 'clear') {
+      buffer = '';
+      renderDots();
+      return;
+    }
+    if (key === 'enter') {
+      checkPin();
+      return;
+    }
+    if (buffer.length >= CONFIG.pin.length) return;
+    buffer += key;
+    renderDots();
+  }
+
+  keypad.addEventListener('click', (e) => {
+    const btn = e.target.closest('.key');
+    if (!btn) return;
+    pressKey(btn.dataset.key);
+  });
+
+  // dukungan keyboard fisik juga
+  document.addEventListener('keydown', (e) => {
+    if (screen.classList.contains('is-hidden')) return;
+    if (/^[0-9]$/.test(e.key)) pressKey(e.key);
+    else if (e.key === 'Enter') pressKey('enter');
+    else if (e.key === 'Backspace') { buffer = buffer.slice(0, -1); renderDots(); }
+    else if (e.key === 'Escape') { buffer = ''; renderDots(); }
+  });
+
+  renderDots();
+}
+
+/* =========================================================
    PARTIKEL EMAS AMBIEN (canvas)
    ========================================================= */
 function initMotes() {
@@ -64,7 +145,7 @@ function initMotes() {
 
   function tick() {
     ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = '#C9A662';
+    ctx.fillStyle = '#F6A6C1';
     particles.forEach((p) => {
       p.y -= p.speed;
       p.x += p.drift;
@@ -93,33 +174,39 @@ function initMotes() {
    LILIN — tiup untuk membuat harapan
    ========================================================= */
 function initCandle() {
-  const btn = document.getElementById('candleBtn');
+  const candles = document.querySelectorAll('.candle');
   const hint = document.getElementById('hint');
   const hero = document.querySelector('.hero');
   const gallery = document.getElementById('gallerySection');
-  let blown = false;
+  let blownCount = 0;
+  let done = false;
 
-  function blow() {
-    if (blown) return;
-    blown = true;
-    btn.classList.add('blown');
-    hint.textContent = 'harapanmu sudah dikirim ke semesta';
-    hint.style.opacity = '0.85';
-    burstMotes(btn);
+  function blowOne(candle) {
+    if (done || candle.classList.contains('blown')) return;
+    candle.classList.add('blown');
+    burstMotes(candle);
+    blownCount++;
 
-    setTimeout(() => {
-      // buka semua bagian yang tadinya belum "ada"
-      document.querySelectorAll('.locked').forEach((el) => el.classList.remove('locked'));
-      hero.classList.add('is-unlocked');
-
-      gallery.classList.add('is-visible');
-      gallery.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 900);
+    if (blownCount < candles.length) {
+      const sisa = candles.length - blownCount;
+      hint.textContent = sisa === 1 ? 'satu lagi!' : `${sisa} lilin lagi...`;
+    } else {
+      done = true;
+      hint.textContent = 'harapanmu sudah dikirim ke semesta';
+      setTimeout(() => {
+        document.querySelectorAll('.locked').forEach((el) => el.classList.remove('locked'));
+        hero.classList.add('is-unlocked');
+        gallery.classList.add('is-visible');
+        gallery.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 900);
+    }
   }
 
-  btn.addEventListener('click', blow);
-  btn.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); blow(); }
+  candles.forEach((candle) => {
+    candle.addEventListener('click', () => blowOne(candle));
+    candle.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); blowOne(candle); }
+    });
   });
 }
 
@@ -252,7 +339,7 @@ function initTypewriter() {
    ========================================================= */
 function buildGallery() {
   const grid = document.getElementById('galleryGrid');
-  const palette = ['#2A2438', '#332C44', '#3B3350', '#241F30'];
+  const palette = ['#FFD9E4', '#D9F2E6', '#E6DDFB', '#FFEFC2'];
   grid.innerHTML = '';
 
   CONFIG.photos.forEach((photo, i) => {
@@ -362,6 +449,7 @@ function initScrollReveal() {
    ========================================================= */
 document.addEventListener('DOMContentLoaded', () => {
   applyConfig();
+  initPinGate();
   initMotes();
   initCandle();
   initLifeNumbers();
