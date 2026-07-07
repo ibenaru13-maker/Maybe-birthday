@@ -24,7 +24,12 @@ const CONFIG = {
     "Setiap tahun adalah bab baru — semoga bab ini penuh keberanian.",
     "Rayakan dirimu hari ini, bukan hanya karena bertambah tua, tapi karena terus bertumbuh.",
     "Semoga kamu selalu punya alasan untuk tersenyum, bahkan di hari-hari biasa."
-  ]
+  ],
+
+  music: {
+    url: "her.mp3",                      // link file audio langsung (.mp3/.wav/.ogg) — kosongkan untuk sembunyikan tombol musik
+    title: "HER — JVKE"    // ditampilkan di sebelah tombol saat lagu diputar
+  }
 };
 
 /* =========================================================
@@ -193,12 +198,16 @@ function initCandle() {
     } else {
       done = true;
       hint.textContent = 'harapanmu sudah dikirim ke semesta';
+
+      const cakeRect = document.querySelector('.cake').getBoundingClientRect();
+      fireFlowerBurst(cakeRect.left + cakeRect.width / 2, cakeRect.top);
+
       setTimeout(() => {
         document.querySelectorAll('.locked').forEach((el) => el.classList.remove('locked'));
         hero.classList.add('is-unlocked');
         gallery.classList.add('is-visible');
         gallery.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 900);
+      }, 1100);
     }
   }
 
@@ -237,6 +246,73 @@ function burstMotes(originEl) {
     );
     anim.onfinish = () => mote.remove();
   }
+}
+
+/* =========================================================
+   LEDAKAN BUNGA & KILAU — kejutan pas semua lilin selesai ditiup
+   ========================================================= */
+function fireFlowerBurst(originX, originY) {
+  const pieces = ['🌸', '🌼', '🌷', '💐', '✨', '🎉'];
+  const count = 30;
+
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('span');
+    el.className = 'flower-burst';
+    el.textContent = pieces[Math.floor(Math.random() * pieces.length)];
+    document.body.appendChild(el);
+
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 120 + Math.random() * 260;
+    const dx = Math.cos(angle) * distance;
+    const dy = Math.sin(angle) * distance - 80;
+    const rotate = Math.random() * 360 - 180;
+    const duration = 1300 + Math.random() * 900;
+    const size = 16 + Math.random() * 16;
+
+    el.style.left = `${originX}px`;
+    el.style.top = `${originY}px`;
+    el.style.fontSize = `${size}px`;
+
+    const anim = el.animate(
+      [
+        { transform: 'translate(0,0) rotate(0deg) scale(0.5)', opacity: 1 },
+        { transform: `translate(${dx * 0.55}px, ${dy * 0.55}px) rotate(${rotate * 0.5}deg) scale(1.05)`, opacity: 1, offset: 0.5 },
+        { transform: `translate(${dx}px, ${dy + 320}px) rotate(${rotate}deg) scale(0.85)`, opacity: 0 }
+      ],
+      { duration, easing: 'cubic-bezier(.22,.61,.36,1)', fill: 'forwards' }
+    );
+    anim.onfinish = () => el.remove();
+  }
+}
+
+/* =========================================================
+   PEMUTAR MUSIK
+   ========================================================= */
+function initMusic() {
+  const btn = document.getElementById('musicToggle');
+  const audio = document.getElementById('bgMusic');
+  const label = document.getElementById('musicLabel');
+
+  if (!CONFIG.music || !CONFIG.music.url) {
+    btn.style.display = 'none';
+    return;
+  }
+
+  audio.src = CONFIG.music.url;
+  label.textContent = CONFIG.music.title || 'putar lagu';
+  let playing = false;
+
+  btn.addEventListener('click', () => {
+    if (playing) {
+      audio.pause();
+    } else {
+      audio.play().catch(() => {
+        label.textContent = 'gagal memutar lagu';
+      });
+    }
+    playing = !playing;
+    btn.classList.toggle('is-playing', playing);
+  });
 }
 
 /* =========================================================
@@ -452,6 +528,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initPinGate();
   initMotes();
   initCandle();
+  initMusic();
   initLifeNumbers();
   initTypewriter();
   buildGallery();
