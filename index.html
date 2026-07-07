@@ -6,13 +6,42 @@
 <title>Selamat Ulang Tahun</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+  <!-- ===== GERBANG PIN ===== -->
+  <div class="pin-screen" id="pinScreen">
+    <div class="pin-card">
+      <p class="eyebrow">masukkan kode akses</p>
+      <h2 class="pin-title">halaman ini terkunci</h2>
+
+      <div class="pin-dots" id="pinDots"></div>
+
+      <div class="keypad" id="keypad">
+        <button class="key" type="button" data-key="1">1</button>
+        <button class="key" type="button" data-key="2">2</button>
+        <button class="key" type="button" data-key="3">3</button>
+        <button class="key" type="button" data-key="4">4</button>
+        <button class="key" type="button" data-key="5">5</button>
+        <button class="key" type="button" data-key="6">6</button>
+        <button class="key" type="button" data-key="7">7</button>
+        <button class="key" type="button" data-key="8">8</button>
+        <button class="key" type="button" data-key="9">9</button>
+        <button class="key key--clear" type="button" data-key="clear" aria-label="Hapus">C</button>
+        <button class="key" type="button" data-key="0">0</button>
+        <button class="key key--enter" type="button" data-key="enter" aria-label="Buka">↵</button>
+      </div>
+
+      <p class="pin-error" id="pinError">kode salah, coba lagi</p>
+    </div>
+  </div>
+
   <canvas id="motes" class="motes"></canvas>
   <div class="grain"></div>
+
+  <div class="site-content" id="siteContent">
 
   <!-- ===== HERO ===== -->
   <header class="hero">
@@ -22,13 +51,27 @@
     </h1>
     <p class="hero-sub">genap <span data-field="age">[Usia]</span> tahun</p>
 
-    <button class="candle-wrap" id="candleBtn" type="button" aria-label="Sentuh nyala lilin untuk membuat harapan">
-      <span class="flame" id="flame"></span>
-      <span class="wick"></span>
-      <span class="wax"></span>
-    </button>
+    <div class="cake" aria-hidden="false">
+      <div class="cake-plate"></div>
+      <div class="cake-tier cake-tier--bottom"></div>
+      <div class="cake-tier cake-tier--top"></div>
+      <div class="candles" id="candles">
+        <button class="candle" type="button" data-index="0" aria-label="Tiup lilin 1">
+          <span class="flame"></span>
+          <span class="wick"></span>
+        </button>
+        <button class="candle" type="button" data-index="1" aria-label="Tiup lilin 2">
+          <span class="flame"></span>
+          <span class="wick"></span>
+        </button>
+        <button class="candle" type="button" data-index="2" aria-label="Tiup lilin 3">
+          <span class="flame"></span>
+          <span class="wick"></span>
+        </button>
+      </div>
+    </div>
 
-    <p class="hint" id="hint">sentuh nyala lilin untuk membuat harapan</p>
+    <p class="hint" id="hint">tiup ketiga lilinnya satu per satu</p>
     <div class="scroll-cue" aria-hidden="true"><span></span>gulir ke bawah</div>
   </header>
 
@@ -97,6 +140,8 @@
   <footer class="footer">
     <p>dibuat dengan penuh perhatian, untuk satu hari yang layak dirayakan.</p>
   </footer>
+
+  </div><!-- /.site-content -->
 
   <script src="script.js"></script>
 </body>
