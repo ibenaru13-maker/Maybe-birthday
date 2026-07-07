@@ -432,6 +432,65 @@ body::before {
   opacity: 0.9;
 }
 
+.flower-burst {
+  position: fixed;
+  pointer-events: none;
+  z-index: 600;
+  line-height: 1;
+}
+
+/* ---- tombol musik ---- */
+.music-toggle {
+  position: fixed;
+  bottom: 1.4rem;
+  right: 1.4rem;
+  z-index: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--pink-deep);
+  box-shadow: 0 8px 20px rgba(255,158,184,0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.music-toggle:hover { transform: translateY(-2px); }
+
+.music-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--tint-pink);
+  font-size: 1rem;
+}
+.music-toggle.is-playing .music-icon {
+  background: var(--pink);
+  color: #fff;
+  animation: note-bounce 0.9s ease-in-out infinite;
+}
+@keyframes note-bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+.music-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 480px) {
+  .music-label { max-width: 90px; }
+}
+
 /* =========================================================
    GENERIC REVEAL
    ========================================================= */
